@@ -1,0 +1,21 @@
+<template>
+  <div class="slds-grid slds-align_absolute-center">
+    <lightning-select
+      class="slds-col slds-size_1-of-3"
+      style="width: 14rem"
+      label="Object:"
+      value={selectObjName}
+      options={nameOptions}
+      onchange={handleChange}
+      required
+    ></lightning-select>
+
+    <template lwc:if={nameFields.data}>
+      <div>
+        <template for:each={nameFields.data} for:item="field">
+          <div key={field}>{field}</div>
+        </template>
+      </div>
+    </template>
+  </div>
+</template>

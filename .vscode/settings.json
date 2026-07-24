@@ -1,0 +1,17 @@
+{
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/.sf": true,
+    "**/.sfdx": true
+  },
+  "xml.preferences.showSchemaDocumentationType": "none",
+  "salesforce.agentforceVibesAutocomplete.enableAutocompletions": false,
+  "salesforce.agentforceVibesAutocomplete.enableAutocompletionsByFileType": {
+    "apex": true,
+    "javascript": true,
+    "css": true,
+    "html": false
+  },
+  "salesforcedx-vscode-apex.java.home": "C:\\\\Program Files\\\\Java\\\\jdk-21.0.12"
+}
