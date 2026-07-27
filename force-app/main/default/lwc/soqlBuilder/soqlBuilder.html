@@ -1,21 +1,68 @@
 <template>
-  <div class="slds-grid slds-align_absolute-center">
-    <lightning-select
-      class="slds-col slds-size_1-of-3"
-      style="width: 14rem"
-      label="Object:"
-      value={selectObjName}
-      options={nameOptions}
-      onchange={handleChange}
-      required
-    ></lightning-select>
+  <div class="slds-grid  slds-gutters_medium">
+    <div class="slds-col slds-size_2-of-12">
+      <lightning-select
+        aria-placeholder="none"
+        label="Object:"
+        value={selectObjName}
+        options={nameObjectsOptions}
+        onchange={handleObjName}
+        required
+      ></lightning-select>
 
-    <template lwc:if={nameFields.data}>
-      <div>
-        <template for:each={nameFields.data} for:item="field">
-          <div key={field}>{field}</div>
-        </template>
+      <lightning-select
+        label="Fields:"
+        value={selectFieldName}
+        options={nameFieldsOptions}
+        onchange={handleFieldName}
+        required
+      ></lightning-select>
+      <!-- <template lwc:if={nameFields.data}>
+        <div class="">
+          <template for:each={nameFields.data} for:item="field">
+            <div key={field}>{field}</div>
+          </template>
+        </div>
+      </template> -->
+    </div>
+    <div class="slds-col slds-size_8-of-12">
+      <div class="slds-grid ">
+        <div class="slds-col slds-size_3-of-6">
+          <lightning-select
+            label="Sort results by:"
+            value={selectSortingField}
+            options={fieldsForSorting}
+            onchange={z}
+          ></lightning-select>
+          <lightning-select
+            label="Sort results by:"
+            value={selectSortingField}
+            options={fieldsForSorting}
+            onchange={z}
+          ></lightning-select>
+        </div>
+        <div class="slds-col slds-size_1-of-6">
+          <lightning-select
+            options={sortingStrategy}
+            onchange={z}
+          ></lightning-select>
+        </div>
       </div>
-    </template>
+    </div>
+  </div>
+  <div>
+    <lightning-textarea
+      rows="20"
+      type="text"
+      label="Enter or modify a SOQL query below:"
+    ></lightning-textarea>
+    <div class="slds-m-top_medium">
+      <lightning-button
+        variant="brand"
+        label="Query"
+        title="Primary action"
+        onclick={handleQueryClick}
+      ></lightning-button>
+    </div>
   </div>
 </template>

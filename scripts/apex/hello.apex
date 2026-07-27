@@ -1,3 +1,1 @@
-
-
 ObjectManager.name();
