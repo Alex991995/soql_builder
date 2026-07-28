@@ -32,20 +32,35 @@
             label="Sort results by:"
             value={selectSortingField}
             options={fieldsForSorting}
-            onchange={z}
+            onchange={handleSortingField}
           ></lightning-select>
           <lightning-select
-            label="Sort results by:"
-            value={selectSortingField}
+            label="Filter results by:"
+            value={selectFilteringField}
             options={fieldsForSorting}
-            onchange={z}
+            onchange={handleFilteringField}
           ></lightning-select>
         </div>
         <div class="slds-col slds-size_1-of-6">
           <lightning-select
             options={sortingStrategy}
-            onchange={z}
+            onchange={handleSortingStrategy}
           ></lightning-select>
+          <lightning-select
+            options={filteringOperations}
+            onchange={handleFilteringOperation}
+          ></lightning-select>
+        </div>
+
+        <div class="slds-col slds-size_1-of-6">
+          <lightning-select
+            options={sortingStrategy}
+            onchange={handleSortingStrategy}
+          ></lightning-select>
+
+           <lightning-input
+            onchange={handleFilterValueChange}
+           ></lightning-input>
         </div>
       </div>
     </div>
