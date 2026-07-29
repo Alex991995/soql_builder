@@ -1,8 +1,7 @@
 <template>
-  <div class="slds-grid  slds-gutters_medium">
+  <div class="slds-grid slds-gutters_medium">
     <div class="slds-col slds-size_2-of-12">
       <lightning-select
-        aria-placeholder="none"
         label="Object:"
         value={selectObjName}
         options={nameObjectsOptions}
@@ -26,58 +25,57 @@
       </template> -->
     </div>
     <div class="slds-col slds-size_8-of-12">
-      <div class="slds-grid ">
+      <div class="slds-grid">
         <div class="slds-col slds-size_3-of-6">
           <lightning-select
             label="Sort results by:"
             value={selectSortingField}
             options={fieldsForSorting}
             onchange={handleSortingField}
+            disabled={isFieldNameSelected}
           ></lightning-select>
           <lightning-select
             label="Filter results by:"
             value={selectFilteringField}
             options={fieldsForSorting}
             onchange={handleFilteringField}
+            disabled={isFieldNameSelected}
           ></lightning-select>
         </div>
         <div class="slds-col slds-size_1-of-6">
           <lightning-select
             options={sortingStrategy}
             onchange={handleSortingStrategy}
+            disabled={isFieldNameSelected}
           ></lightning-select>
           <lightning-select
             options={filteringOperations}
             onchange={handleFilteringOperation}
+            disabled={isFilteringFieldSelected}
           ></lightning-select>
         </div>
 
         <div class="slds-col slds-size_1-of-6">
-          <lightning-select
+          <!-- <lightning-select
             options={sortingStrategy}
             onchange={handleSortingStrategy}
+          ></lightning-select> -->
+          <lightning-select
+            options={nullOptions}
+            onchange={handleNull}
+            disabled={isFieldNameSelected}
           ></lightning-select>
 
-           <lightning-input
+          <lightning-input
+            disabled={isFilteringFieldSelected}
             onchange={handleFilterValueChange}
-           ></lightning-input>
+          ></lightning-input>
         </div>
       </div>
     </div>
   </div>
   <div>
-    <lightning-textarea
-      rows="20"
-      type="text"
-      label="Enter or modify a SOQL query below:"
-    ></lightning-textarea>
-    <div class="slds-m-top_medium">
-      <lightning-button
-        variant="brand"
-        label="Query"
-        title="Primary action"
-        onclick={handleQueryClick}
-      ></lightning-button>
-    </div>
+    lwc
+    <c-soql-input-runner value-text={soqlQuery}></c-soql-input-runner>
   </div>
 </template>

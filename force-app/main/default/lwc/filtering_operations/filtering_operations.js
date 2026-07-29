@@ -1,10 +1,10 @@
 const filteringOperations = {
-  equal: " = ",
-  notEqual: " != ",
-  greaterThan: " > ",
-  lessThan: " < ",
-  greaterThanOrEqual: " >= ",
-  lessThanOrEqual: " <= "
+  equal: "=",
+  notEqual: "!=",
+  greaterThan: ">",
+  lessThan: "<",
+  greaterThanOrEqual: ">=",
+  lessThanOrEqual: "<="
 };
 
 let filteringOptions = [];
