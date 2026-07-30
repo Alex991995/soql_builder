@@ -23,9 +23,6 @@ public with sharing class ObjectManager {
       .keySet();
 
     for (String f : fieldMap) {
-      // if (f == 'id') {
-      //   continue;
-      // }
       fieldList.add(f.capitalize());
     }
     return fieldList;
