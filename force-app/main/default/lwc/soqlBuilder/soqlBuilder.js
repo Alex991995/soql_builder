@@ -100,8 +100,8 @@ export default class SoqlBuilder extends LightningElement {
     return {
       select: `SELECT ${this.selectFieldName}`,
       from: `FROM ${this.selectObjName}`,
-      where: this.selectFilteringField && this.selectFilterValue && 'WHERE ' + this.selectFilteringField,
-      operation: this.selectFilteringField && this.selectFilterValue && this.selectFilteringOperation,
+      where: this.whereClause,
+      operation: this.operationClause,
       input: this.selectFilteringField && this.selectFilterValue,
       orderBy: this.selectSortingField && 'ORDER BY ' + this.selectSortingField,
       sortStrategy: this.selectSortingField && this.selectSortingStrategy,
@@ -109,15 +109,11 @@ export default class SoqlBuilder extends LightningElement {
     };
   }
 
-  renderedCallback() {
-    console.log("objQuery", Object.values( this.objQuery));
-
-    console.log("selectObjName", this.selectObjName);
-    console.log("selectFieldName", this.selectFieldName);
-    console.log("selectSortingField", this.selectSortingField);
-    console.log("selectFilteringField", this.selectFilteringField);
-    console.log("selectFilteringOperation", this.selectFilteringOperation);
-    console.log("selectFilterValue", this.selectFilterValue);
+  get whereClause() {
+    return this.selectFilteringField && this.selectFilterValue && 'WHERE ' + this.selectFilteringField
+  }
+  get operationClause() {
+    return this.selectFilteringField && this.selectFilterValue && this.selectFilteringOperation
   }
 
   /**
@@ -138,17 +134,14 @@ export default class SoqlBuilder extends LightningElement {
     this.soqlQuery = `${select} ${from}`;
   }
 
-  handleSortingField(event) {
-    this.selectSortingField = event.detail.value;
-    const { select, from, where, operation, input} = this.objQuery;
-    const firstPartQuery = `${select} ${from} ${this.selectFilteringField && where + ' ' + operation + ' ' + input}`;
-
-    if (!this.selectSortingField) {
-      this.soqlQuery = firstPartQuery;
-      return;
-    }
+  refreshSoqlQuery(){
     const query = Object.values(this.objQuery).filter(item => Boolean(item)).join(" ");
     this.soqlQuery = query;
+  }
+
+  handleSortingField(event) {
+    this.selectSortingField = event.detail.value;
+    this.refreshSoqlQuery()
   }
 
   // handleQueryClick() {
@@ -157,45 +150,25 @@ export default class SoqlBuilder extends LightningElement {
   // }
   handleFilteringField(event) {
     this.selectFilteringField = event.detail.value;
-    const query = Object.values(this.objQuery).filter(item => Boolean(item)).join(" ");
-    this.soqlQuery = query;
+    this.refreshSoqlQuery()
   }
   handleFilteringOperation(event) {
     this.selectFilteringOperation = event.detail.value;
-    const isWhere = this.soqlQuery.includes("WHERE");
-    if (isWhere) {
-      const query = Object.values(this.objQuery).join(" ");
-      this.soqlQuery = query;
-    }
+    this.refreshSoqlQuery()
   }
 
   handleSortingStrategy(event) {
     this.selectSortingStrategy = event.detail.value;
-    const isOrderBy = this.soqlQuery.includes("ORDER BY");
-
-    if (isOrderBy) {
-      const query = Object.values(this.objQuery).filter(item => Boolean(item)).join(" ");
-      this.soqlQuery = query;
-    }
+    this.refreshSoqlQuery()
   }
 
   handleNull(event) {
     this.selectNull = event.detail.value;
-    let query = '';
-    const { select, from, orderBy, sortStrategy, input, nullQuery } = this.objQuery;
-    if (!input) {
-      query = `${select} ${from} ${orderBy} ${sortStrategy} ${nullQuery}`;
-      this.soqlQuery = query;
-      console.log("input!", query);
-      return;
-    }
-    query = Object.values(this.objQuery).join(" ");
-    this.soqlQuery = query;
+    this.refreshSoqlQuery()
   }
   
   handleFilterValueChange(event) {
     this.selectFilterValue = event.detail.value;
-    const query = Object.values(this.objQuery).filter(item => Boolean(item)).join(" ");
-    this.soqlQuery = query;
+    this.refreshSoqlQuery()
   }
 }
