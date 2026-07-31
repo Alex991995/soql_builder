@@ -1,13 +1,13 @@
 import { LightningElement, wire } from "lwc";
 import getNameAllObjects from "@salesforce/apex/ObjectManager.getNameAllObjects";
 import getNameFieldsOfObject from "@salesforce/apex/ObjectManager.getNameFieldsOfObject";
-import { filteringOptions, filteringOperations } from "c/filtering_operations";
+import { filteringOptions, filteringOperations } from "c/filteringOperations";
 
 const sortingOrder = {
   ASC: "ASC",
   DESC: "DESC"
 };
-
+ 
 const sortingStrategy = [
   { label: "A to Z", value: sortingOrder.ASC },
   { label: "Z to A", value: sortingOrder.DESC }
@@ -23,7 +23,7 @@ export default class SoqlBuilder extends LightningElement {
   @wire(getNameFieldsOfObject, { objectName: "$selectObjName" })
   nameFields;
   soqlQuery = "";
-
+  
   selectObjName = "";
   selectFieldName = "";
   selectSortingField = "";
@@ -87,7 +87,7 @@ export default class SoqlBuilder extends LightningElement {
     const isSelected = Boolean(this.selectFieldName);
     return !isSelected;
   }
-
+  
   /**
    * @description: If a field name is selected, the select element should be disabled
    */
@@ -103,17 +103,30 @@ export default class SoqlBuilder extends LightningElement {
       where: this.whereClause,
       operation: this.operationClause,
       input: this.selectFilteringField && this.selectFilterValue,
-      orderBy: this.selectSortingField && 'ORDER BY ' + this.selectSortingField,
+      orderBy: this.selectSortingField && "ORDER BY " + this.selectSortingField,
       sortStrategy: this.selectSortingField && this.selectSortingStrategy,
       nullQuery: this.selectSortingField && this.selectNull
     };
   }
-
+  /**
+  * @description: Shows the whole where clause if the filtering field and input are selected
+  */
   get whereClause() {
-    return this.selectFilteringField && this.selectFilterValue && 'WHERE ' + this.selectFilteringField
+    return (
+      this.selectFilteringField &&
+      this.selectFilterValue &&
+      "WHERE " + this.selectFilteringField
+    );
   }
+  /**
+   * @description: Shows the operation clause if the filtering field and input are selected
+   */
   get operationClause() {
-    return this.selectFilteringField && this.selectFilterValue && this.selectFilteringOperation
+    return (
+      this.selectFilteringField &&
+      this.selectFilterValue &&
+      this.selectFilteringOperation
+    );
   }
 
   /**
@@ -134,41 +147,39 @@ export default class SoqlBuilder extends LightningElement {
     this.soqlQuery = `${select} ${from}`;
   }
 
-  refreshSoqlQuery(){
-    const query = Object.values(this.objQuery).filter(item => Boolean(item)).join(" ");
+  refreshSoqlQuery() {
+    const query = Object.values(this.objQuery)
+      .filter((item) => Boolean(item))
+      .join(" ");
     this.soqlQuery = query;
   }
 
   handleSortingField(event) {
     this.selectSortingField = event.detail.value;
-    this.refreshSoqlQuery()
+    this.refreshSoqlQuery();
   }
 
-  // handleQueryClick() {
-  // let query = `SELECT ${this.selectFieldName} FROM ${this.selectObjName}`;
-  // this.template.querySelector("lightning-textarea").value = query;
-  // }
   handleFilteringField(event) {
     this.selectFilteringField = event.detail.value;
-    this.refreshSoqlQuery()
+    this.refreshSoqlQuery();
   }
   handleFilteringOperation(event) {
     this.selectFilteringOperation = event.detail.value;
-    this.refreshSoqlQuery()
+    this.refreshSoqlQuery();
   }
 
   handleSortingStrategy(event) {
     this.selectSortingStrategy = event.detail.value;
-    this.refreshSoqlQuery()
+    this.refreshSoqlQuery();
   }
 
   handleNull(event) {
     this.selectNull = event.detail.value;
-    this.refreshSoqlQuery()
+    this.refreshSoqlQuery();
   }
-  
+
   handleFilterValueChange(event) {
     this.selectFilterValue = event.detail.value;
-    this.refreshSoqlQuery()
+    this.refreshSoqlQuery();
   }
 }

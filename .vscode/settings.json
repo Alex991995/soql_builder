@@ -6,7 +6,7 @@
     "**/.sfdx": true
   },
   "xml.preferences.showSchemaDocumentationType": "none",
-  "salesforce.agentforceVibesAutocomplete.enableAutocompletions": false,
+  "salesforce.agentforceVibesAutocomplete.enableAutocompletions": true,
   "salesforce.agentforceVibesAutocomplete.enableAutocompletionsByFileType": {
     "apex": true,
     "javascript": true,
@@ -14,4 +14,10 @@
     "html": false
   },
   "salesforcedx-vscode-apex.java.home": "C:\\\\Program Files\\\\Java\\\\jdk-21.0.12",
+   "editor.inlineSuggest.enabled": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    }
 }
