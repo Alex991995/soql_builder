@@ -3,8 +3,10 @@ import getRecords from "@salesforce/apex/ObjectManager.getRecords";
 import getCountQuery from "@salesforce/apex/ObjectManager.getCountQuery";
 
 export default class SoqlInputRunner extends LightningElement {
-  @api valueText = "";
+  @api valueText;
+  @api isNotFieldNameSelected;
   @track dataRecords = [];
+  isNotInitialRequest = false;
   // @dat aRecords = [];
 
   // columns = [
@@ -27,21 +29,30 @@ export default class SoqlInputRunner extends LightningElement {
     }
   ];
 
-  data = this.result.map((item, i) => {
-    return {
-      count: i + 1,
-      ...item
-    };
-  });
+  // data = this.result.map((item, i) => {
+  //   return {
+  //     count: i + 1,
+  //     ...item
+  //   };
+  // });
+
+  handleValueChange(event) {
+    event.target.value = this.valueText;
+  }
 
   renderedCallback() {
     console.log(this.columns);
+    console.log("isNotInitialRequest", this.isNotInitialRequest);
+  }
+
+  connectedCallback() {
+    console.log("isNotInitialRequest", this.isNotInitialRequest);
   }
 
   get columns() {
     if (this.dataRecords.length) {
       const countArray = [{ label: "", fieldName: "count" }];
-      const firstObject = Object.keys(this.dataRecords[0]);
+      const firstObject = Object.keys(this.dataRecords[0]).reverse();
 
       const modifiedData = firstObject.map((key) => ({
         label: key,
@@ -52,12 +63,24 @@ export default class SoqlInputRunner extends LightningElement {
     return null;
   }
 
+  get data() {
+    if (!this.dataRecords.length) return null;
+    return this.dataRecords.map((item, i) => ({ count: i + 1, ...item }));
+  }
+  get isDataAndColumnsReady() {
+    return !!this.data && !!this.columns;
+  }
+
   handleQueryClick() {
+    if (!this.valueText) {
+      return;
+    }
     if (this.valueText.toLowerCase().includes("count")) {
       this.runCountQuery();
     } else {
       this.runRecords();
     }
+    this.isNotInitialRequest = true;
   }
 
   runCountQuery() {

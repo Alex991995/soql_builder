@@ -6,10 +6,10 @@
     "**/.sfdx": true
   },
   "xml.preferences.showSchemaDocumentationType": "none",
-  "salesforce.agentforceVibesAutocomplete.enableAutocompletions": true,
+  "salesforce.agentforceVibesAutocomplete.enableAutocompletions": false,
   "salesforce.agentforceVibesAutocomplete.enableAutocompletionsByFileType": {
     "apex": true,
-    "javascript": true,
+    "javascript": false,
     "css": true,
     "html": false
   },

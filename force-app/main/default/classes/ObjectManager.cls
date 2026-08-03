@@ -30,9 +30,10 @@ public with sharing class ObjectManager {
   @AuraEnabled
   public static List<sObject> getRecords(String query) {
     try {
-      List<sObject> sObjList = Database.query(query);
+      List<sObject> sObjList = Database.query(query, AccessLevel.USER_MODE);
       return sObjList;
-    } catch (Exception e) {
+    } catch (Exception  e) {
+      System.debug(e);
       throw new AuraHandledException(e.getMessage());
     }
   }
@@ -40,9 +41,9 @@ public with sharing class ObjectManager {
   @AuraEnabled
   public static Integer getCountQuery(String query) {
     try {
-      Integer num = Database.countQuery(query);
+      Integer num = Database.countQuery(query, AccessLevel.USER_MODE);
       return num;
-    } catch (Exception e) {
+    } catch (Exception  e) {
       throw new AuraHandledException(e.getMessage());
     }
   }

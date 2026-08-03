@@ -1,4 +1,4 @@
-import { LightningElement, wire } from "lwc";
+import { LightningElement, wire, track } from "lwc";
 import getNameAllObjects from "@salesforce/apex/ObjectManager.getNameAllObjects";
 import getNameFieldsOfObject from "@salesforce/apex/ObjectManager.getNameFieldsOfObject";
 import { filteringOptions, filteringOperations } from "c/filteringOperations";
@@ -25,7 +25,7 @@ export default class SoqlBuilder extends LightningElement {
   soqlQuery = "";
   
   selectObjName = "";
-  selectFieldName = "";
+  @track selectFieldNames = [];
   selectSortingField = "";
   selectFilteringField = "";
   selectFilteringOperation = filteringOperations.equal;
@@ -83,8 +83,8 @@ export default class SoqlBuilder extends LightningElement {
   /**
    * @description: If a field name is selected, the select element should be disabled
    */
-  get isFieldNameSelected() {
-    const isSelected = Boolean(this.selectFieldName);
+  get isNotFieldNameSelected() {
+    const isSelected = Boolean(this.selectFieldNames.length);
     return !isSelected;
   }
   
@@ -96,9 +96,12 @@ export default class SoqlBuilder extends LightningElement {
     return !isSelected;
   }
 
+  renderedCallback() {
+    console.log('objQuery', this.selectFieldNames);
+  }
   get objQuery() {
     return {
-      select: `SELECT ${this.selectFieldName}`,
+      select: `SELECT ${this.selectFieldNames.join(", ")}`,
       from: `FROM ${this.selectObjName}`,
       where: this.whereClause,
       operation: this.operationClause,
@@ -129,20 +132,22 @@ export default class SoqlBuilder extends LightningElement {
     );
   }
 
+
   /**
    * @description: Select an Object and reset the selected field and query
    */
   handleObjName(event) {
     this.selectObjName = event.detail.value;
-    this.selectFieldName = "";
+    this.selectFieldNames = [];
     this.soqlQuery = "";
   }
 
   /**
    * @description: Select a field and insert it into the query
    */
-  handleFieldName(event) {
-    this.selectFieldName = event.detail.value;
+  handleFieldNames(event) {
+
+    this.selectFieldNames = event.detail.map(item => item.value);
     const { select, from } = this.objQuery;
     this.soqlQuery = `${select} ${from}`;
   }

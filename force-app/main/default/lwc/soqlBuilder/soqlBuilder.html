@@ -1,71 +1,87 @@
 <template>
-  <div class="slds-grid slds-gutters_medium">
-    <div class="slds-col slds-size_2-of-12">
-      <lightning-select
-        label="Object:"
-        value={selectObjName}
-        options={nameObjectsOptions}
-        onchange={handleObjName}
-        required
-      ></lightning-select>
+  <!-- <div class="main-container"> -->
+    <div class="slds-grid slds-gutters_medium">
+      <div class="slds-col slds-size_3-of-12">
+        <lightning-select
+          label="Object:"
+          value={selectObjName}
+          options={nameObjectsOptions}
+          onchange={handleObjName}
+          required
+        ></lightning-select>
 
-      <lightning-select
-        label="Fields:"
-        value={selectFieldName}
-        options={nameFieldsOptions}
-        onchange={handleFieldName}
-        required
-      ></lightning-select>
-    </div>
-    <div class="slds-col slds-size_8-of-12">
-      <div class="slds-grid">
-        <div class="slds-col slds-size_3-of-6">
-          <lightning-select
-            label="Sort results by:"
-            options={fieldsForSorting}
-            onchange={handleSortingField}
-            disabled={isFieldNameSelected}
-          ></lightning-select>
-          <lightning-select
-            label="Filter results by:"
-            options={fieldsForSorting}
-            onchange={handleFilteringField}
-            disabled={isFieldNameSelected}
-          ></lightning-select>
-        </div>
-        <div class="slds-col slds-size_1-of-6">
-          <lightning-select
-            options={sortingStrategy}
-            onchange={handleSortingStrategy}
-            disabled={isFieldNameSelected}
-          ></lightning-select>
-          <lightning-select
-            options={filteringOperations}
-            onchange={handleFilteringOperation}
-            disabled={isFilteringFieldSelected}
-          ></lightning-select>
-        </div>
-
-        <div class="slds-col slds-size_1-of-6">
-          <!-- <lightning-select
+        <!-- <lightning-select
+          label="Fields:"
+          value={selectFieldName}
+          options={nameFieldsOptions}
+          onchange={handleFieldName}
+          multiple
+          required
+        ></lightning-select> -->
+        <c-multi-select
+          label="Fields:"
+          options={nameFieldsOptions}
+          onchange={handleFieldNames}
+          placeholder="Select fields"
+          required
+        ></c-multi-select>
+      </div>
+      <div class="slds-col slds-size_9-of-12">
+        <div class="slds-grid">
+          <div class="slds-col slds-size_3-of-5">
+            <lightning-select
+              label="Sort results by:"
+              options={fieldsForSorting}
+              onchange={handleSortingField}
+              disabled={isNotFieldNameSelected}
+            ></lightning-select>
+            <lightning-select
+              label="Filter results by:"
+              options={fieldsForSorting}
+              onchange={handleFilteringField}
+              disabled={isNotFieldNameSelected}
+            ></lightning-select>
+          </div>
+          <div class="slds-col slds-size_1-of-5 slds-var-m-top_x-small">
+            <div class="select-container">
+              <lightning-select
+                options={sortingStrategy}
+                onchange={handleSortingStrategy}
+                disabled={isNotFieldNameSelected}
+              ></lightning-select>
+              <lightning-select
+                options={filteringOperations}
+                onchange={handleFilteringOperation}
+                disabled={isFilteringFieldSelected}
+              ></lightning-select>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-5 slds-var-m-top_x-small">
+            <div class="select-input-container">
+              <!-- <lightning-select
             options={sortingStrategy}
             onchange={handleSortingStrategy}
           ></lightning-select> -->
-          <lightning-select
-            options={nullOptions}
-            onchange={handleNull}
-            disabled={isFieldNameSelected}
-          ></lightning-select>
+              <lightning-select
+                options={nullOptions}
+                onchange={handleNull}
+                disabled={isNotFieldNameSelected}
+              ></lightning-select>
 
-          <lightning-input
-            disabled={isFilteringFieldSelected}
-            onchange={handleFilterValueChange}
-          ></lightning-input>
+              <lightning-input
+                disabled={isFilteringFieldSelected}
+                onchange={handleFilterValueChange}
+              ></lightning-input>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div>
-    <c-soql-input-runner value-text={soqlQuery}></c-soql-input-runner>
-  </div>
+    <div>
+      <c-soql-input-runner
+        value-text={soqlQuery}
+        is-not-field-name-selected={isNotFieldNameSelected}>
+      </c-soql-input-runner>
+    </div>
+  <!-- </div> -->
 </template>

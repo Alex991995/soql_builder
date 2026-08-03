@@ -1,3 +1,16 @@
-:host {
-  /* --slds-c-button-spacing-padding-horizontal: 0.5rem; */
+
+.main-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.select-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }

@@ -4,6 +4,7 @@
     rows="20"
     type="text"
     label="Enter or modify a SOQL query below:"
+    onchange={handleValueChange}
   ></lightning-textarea>
   <div class="slds-m-top_medium">
     <lightning-button
@@ -11,13 +12,21 @@
       label="Query"
       title="Primary action"
       onclick={handleQueryClick}
+      disabled={isNotFieldNameSelected}
     ></lightning-button>
   </div>
 
-  <template lwc:if={columns}>
-    <div>
-      <lightning-datatable key-field="id" data={data} columns={columns}>
-      </lightning-datatable>
-    </div>
+  <template lwc:if={isNotInitialRequest}>
+    <template lwc:if={isDataAndColumnsReady}>
+      <div class="slds-m-top_x-small">
+        <lightning-datatable key-field="id" data={data} columns={columns}>
+        </lightning-datatable>
+      </div>
+    </template>
+    <template lwc:else>
+      <div class="slds-align_absolute-center">
+        <p class="slds-text-color_weak">Sorry, no records returned</p>
+      </div>
+    </template>
   </template>
 </template>
