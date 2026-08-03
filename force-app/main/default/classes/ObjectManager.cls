@@ -31,9 +31,17 @@ public with sharing class ObjectManager {
   public static List<sObject> getRecords(String query) {
     try {
       List<sObject> sObjList = Database.query(query, AccessLevel.USER_MODE);
+      List<sObject> sObjListWithoutId = new List<sObject>();
+      
+      Boolean containsId = query.contains('Id'); 
+      if(!containsId) {
+        for(sObject sObj : sObjList) {
+            sObjListWithoutId.add(sObj.clone(false, false, false, false));
+        }
+        return sObjListWithoutId;
+      }
       return sObjList;
     } catch (Exception  e) {
-      System.debug(e);
       throw new AuraHandledException(e.getMessage());
     }
   }

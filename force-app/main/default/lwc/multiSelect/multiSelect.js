@@ -40,13 +40,15 @@ export default class MultiSelect extends LightningElement {
       this.isInitialized = true;
       this.setSelection();
     }
-
-    console.log('currentOptions', this.currentOptions);
-    console.log('selectedOptions', this.selectedOptions);
   }
 
   handleChange(event) {
     this.change(event);
+  }
+
+  @api clear() {
+    this.currentOptions.forEach((item) => (item.selected = false));
+    this.setSelection();
   }
 
   handleRemove(event) {

@@ -7,7 +7,7 @@ const sortingOrder = {
   ASC: "ASC",
   DESC: "DESC"
 };
- 
+
 const sortingStrategy = [
   { label: "A to Z", value: sortingOrder.ASC },
   { label: "Z to A", value: sortingOrder.DESC }
@@ -23,7 +23,7 @@ export default class SoqlBuilder extends LightningElement {
   @wire(getNameFieldsOfObject, { objectName: "$selectObjName" })
   nameFields;
   soqlQuery = "";
-  
+
   selectObjName = "";
   @track selectFieldNames = [];
   selectSortingField = "";
@@ -87,7 +87,7 @@ export default class SoqlBuilder extends LightningElement {
     const isSelected = Boolean(this.selectFieldNames.length);
     return !isSelected;
   }
-  
+
   /**
    * @description: If a field name is selected, the select element should be disabled
    */
@@ -97,7 +97,7 @@ export default class SoqlBuilder extends LightningElement {
   }
 
   renderedCallback() {
-    console.log('objQuery', this.selectFieldNames);
+    console.log("objQuery", this.selectFieldNames);
   }
   get objQuery() {
     return {
@@ -112,8 +112,8 @@ export default class SoqlBuilder extends LightningElement {
     };
   }
   /**
-  * @description: Shows the whole where clause if the filtering field and input are selected
-  */
+   * @description: Shows the whole where clause if the filtering field and input are selected
+   */
   get whereClause() {
     return (
       this.selectFilteringField &&
@@ -132,7 +132,6 @@ export default class SoqlBuilder extends LightningElement {
     );
   }
 
-
   /**
    * @description: Select an Object and reset the selected field and query
    */
@@ -140,14 +139,14 @@ export default class SoqlBuilder extends LightningElement {
     this.selectObjName = event.detail.value;
     this.selectFieldNames = [];
     this.soqlQuery = "";
+    this.template.querySelector("c-multi-select").clear();
   }
 
   /**
    * @description: Select a field and insert it into the query
    */
   handleFieldNames(event) {
-
-    this.selectFieldNames = event.detail.map(item => item.value);
+    this.selectFieldNames = event.detail.map((item) => item.value);
     const { select, from } = this.objQuery;
     this.soqlQuery = `${select} ${from}`;
   }

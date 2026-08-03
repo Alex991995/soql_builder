@@ -7,47 +7,19 @@ export default class SoqlInputRunner extends LightningElement {
   @api isNotFieldNameSelected;
   @track dataRecords = [];
   isNotInitialRequest = false;
-  // @dat aRecords = [];
-
-  // columns = [
-  //   { label: "", fieldName: "count" },
-  //   { label: "Id", fieldName: "Id" }
-  // ];
-
-  result = [
-    {
-      Id: "a0Ed200000HBY7pEAH"
-    },
-    {
-      Id: "a0Ed200000HBY9REAX"
-    },
-    {
-      Id: "a0Ed200000HG9vBEAT"
-    },
-    {
-      Id: "a0Ed200000HGGqDEAX"
-    }
-  ];
-
-  // data = this.result.map((item, i) => {
-  //   return {
-  //     count: i + 1,
-  //     ...item
-  //   };
-  // });
 
   handleValueChange(event) {
     event.target.value = this.valueText;
   }
 
-  renderedCallback() {
-    console.log(this.columns);
-    console.log("isNotInitialRequest", this.isNotInitialRequest);
-  }
+  // renderedCallback() {
+  //   console.log(this.columns);
+  //   console.log("isNotInitialRequest", this.isNotInitialRequest);
+  // }
 
-  connectedCallback() {
-    console.log("isNotInitialRequest", this.isNotInitialRequest);
-  }
+  // connectedCallback() {
+  //   console.log("isNotInitialRequest", this.isNotInitialRequest);
+  // }
 
   get columns() {
     if (this.dataRecords.length) {
