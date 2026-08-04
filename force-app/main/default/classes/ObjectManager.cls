@@ -13,9 +13,7 @@ public with sharing class ObjectManager {
   @AuraEnabled(cacheable=true)
   public static List<String> getNameFieldsOfObject(String objectName) {
     List<String> fieldList = new List<String>();
-
     Map<String, Schema.SObjectType> schemaMap = Schema.getGlobalDescribe();
-
     Set<String> fieldMap = schemaMap.get(objectName)
       .getDescribe()
       .fields.getMap()
@@ -31,17 +29,13 @@ public with sharing class ObjectManager {
   public static List<sObject> getRecords(String query) {
     try {
       List<sObject> sObjList = Database.query(query, AccessLevel.USER_MODE);
-      List<sObject> sObjListWithoutId = new List<sObject>();
-      
-      Boolean containsId = query.contains('Id'); 
-      if(!containsId) {
-        for(sObject sObj : sObjList) {
-            sObjListWithoutId.add(sObj.clone(false, false, false, false));
-        }
-        return sObjListWithoutId;
+
+      Boolean containsId = query.contains('Id');
+      if (!containsId) {
+        return getRecordsWithoutId(sObjList);
       }
       return sObjList;
-    } catch (Exception  e) {
+    } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
     }
   }
@@ -51,8 +45,16 @@ public with sharing class ObjectManager {
     try {
       Integer num = Database.countQuery(query, AccessLevel.USER_MODE);
       return num;
-    } catch (Exception  e) {
+    } catch (Exception e) {
       throw new AuraHandledException(e.getMessage());
     }
+  }
+
+  private static List<sObject> getRecordsWithoutId(List<sObject> sObjList) {
+    List<sObject> sObjListWithoutId = new List<sObject>();
+    for (sObject sObj : sObjList) {
+      sObjListWithoutId.add(sObj.clone(false, false, false, false));
+    }
+    return sObjListWithoutId;
   }
 }

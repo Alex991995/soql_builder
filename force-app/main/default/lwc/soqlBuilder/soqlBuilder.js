@@ -32,6 +32,8 @@ export default class SoqlBuilder extends LightningElement {
   selectFilterValue = "";
   selectNull = nullOptions[0].value;
   selectSortingStrategy = sortingOrder.ASC;
+  selectLimit = "";
+  selectOffset = "";
 
   filteringOperations = filteringOptions;
   sortingStrategy = sortingStrategy;
@@ -83,7 +85,7 @@ export default class SoqlBuilder extends LightningElement {
   /**
    * @description: If a field name is selected, the select element should be disabled
    */
-  get isNotFieldNameSelected() {
+  get isFieldNameNotSelected() {
     const isSelected = Boolean(this.selectFieldNames.length);
     return !isSelected;
   }
@@ -91,14 +93,11 @@ export default class SoqlBuilder extends LightningElement {
   /**
    * @description: If a field name is selected, the select element should be disabled
    */
-  get isFilteringFieldSelected() {
+  get isFilteringFieldNotSelected() {
     const isSelected = Boolean(this.selectFilteringField);
     return !isSelected;
   }
 
-  renderedCallback() {
-    console.log("objQuery", this.selectFieldNames);
-  }
   get objQuery() {
     return {
       select: `SELECT ${this.selectFieldNames.join(", ")}`,
@@ -108,7 +107,9 @@ export default class SoqlBuilder extends LightningElement {
       input: this.selectFilteringField && this.selectFilterValue,
       orderBy: this.selectSortingField && "ORDER BY " + this.selectSortingField,
       sortStrategy: this.selectSortingField && this.selectSortingStrategy,
-      nullQuery: this.selectSortingField && this.selectNull
+      nullQuery: this.selectSortingField && this.selectNull,
+      limit: this.selectFilteringField && this.selectLimit && "LIMIT " + this.selectLimit,
+      offset: this.selectFilteringField && this.selectOffset && "OFFSET " + this.selectOffset
     };
   }
   /**
@@ -137,8 +138,7 @@ export default class SoqlBuilder extends LightningElement {
    */
   handleObjName(event) {
     this.selectObjName = event.detail.value;
-    this.selectFieldNames = [];
-    this.soqlQuery = "";
+    this.resetAllFields();
     this.template.querySelector("c-multi-select").clear();
   }
 
@@ -165,6 +165,9 @@ export default class SoqlBuilder extends LightningElement {
 
   handleFilteringField(event) {
     this.selectFilteringField = event.detail.value;
+    if(!this.selectFilteringField) {
+      this.resetFieldsRelatedToFiltering();
+    }
     this.refreshSoqlQuery();
   }
   handleFilteringOperation(event) {
@@ -185,5 +188,36 @@ export default class SoqlBuilder extends LightningElement {
   handleFilterValueChange(event) {
     this.selectFilterValue = event.detail.value;
     this.refreshSoqlQuery();
+  }
+
+  handleLimitRecords(event) {
+    this.selectLimit = event.detail.value;
+    this.refreshSoqlQuery();
+  }
+
+  handleOffsetRecords(event) {
+    this.selectOffset = event.detail.value;
+    this.refreshSoqlQuery();
+  }
+
+  resetAllFields() {
+    this.selectFieldNames = [];
+    this.soqlQuery = "";
+
+    this.selectSortingField = "";
+    this.selectFilteringField = "";
+    this.selectFilteringOperation = filteringOperations.equal;
+    this.selectFilterValue = "";
+    this.selectNull = nullOptions[0].value;
+    this.selectSortingStrategy = sortingOrder.ASC;
+    this.selectLimit = "";
+    this.selectOffset = "";
+  }
+
+  resetFieldsRelatedToFiltering() {
+    this.selectFilteringOperation = filteringOperations.equal;
+    this.selectFilterValue = "";
+    this.selectLimit = "";
+    this.selectOffset = "";
   }
 }

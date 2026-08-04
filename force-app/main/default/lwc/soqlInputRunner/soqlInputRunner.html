@@ -17,10 +17,25 @@
   </div>
 
   <template lwc:if={isNotInitialRequest}>
-    <template lwc:if={isDataAndColumnsReady}>
+    <template lwc:if={loading}>
+      <div class="slds-align_absolute-center">
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+      </div>
+    </template>
+    <template lwc:elseif={isDataReady}>
       <div class="slds-m-top_x-small">
         <lightning-datatable key-field="id" data={data} columns={columns}>
         </lightning-datatable>
+      </div>
+    </template>
+    <template lwc:elseif={isNumberRecordsANumber}>
+      <div class="slds-align_absolute-center">
+        <p class="slds-text-color_success">Number of records returned: {numberRecords}</p>
+      </div>
+    </template>
+    <template lwc:elseif={recordError}>
+      <div class="slds-align_absolute-center">
+        <p class="slds-text-color_error">{recordError}</p>
       </div>
     </template>
     <template lwc:else>

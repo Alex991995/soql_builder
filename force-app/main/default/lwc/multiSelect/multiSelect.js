@@ -84,7 +84,6 @@ export default class MultiSelect extends LightningElement {
       .forEach((item) => (item.selected = event.detail.selected));
     this.setSelection();
     const selection = this.getSelectedItems();
-    console.log('selection', selection);
     this.dispatchEvent(new CustomEvent('change', { detail: this.singleSelect ? selection[0] : selection }));
 
     // for single select picklist close dropdown after selection is made

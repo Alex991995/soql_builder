@@ -1,7 +1,6 @@
 <template>
-  <!-- <div class="main-container"> -->
-    <div class="slds-grid slds-gutters_medium">
-      <div class="slds-col slds-size_3-of-12">
+    <div class="slds-grid slds-gutters_medium slds-wrap">
+      <div class="slds-col slds-small-size_3-of-12 slds-size_12-of-12">
         <lightning-select
           label="Object:"
           value={selectObjName}
@@ -17,63 +16,71 @@
           required
         ></c-multi-select>
       </div>
-      <div class="slds-col slds-size_9-of-12">
-        <div class="slds-grid">
-          <div class="slds-col slds-size_2-of-5">
+      <div class="slds-col slds-small-size_9-of-12 slds-size_12-of-12">
+        <div class="slds-grid slds-wrap">
+          <div class="slds-col slds-large-size_2-of-5 slds-size_1-of-2">
             <lightning-select
               label="Sort results by:"
+              value={selectSortingField}
               options={fieldsForSorting}
               onchange={handleSortingField}
-              disabled={isNotFieldNameSelected}
+              disabled={isFieldNameNotSelected}
             ></lightning-select>
             <lightning-select
               label="Filter results by:"
+              value={selectFilteringField}
               options={fieldsForSorting}
               onchange={handleFilteringField}
-              disabled={isNotFieldNameSelected}
+              disabled={isFieldNameNotSelected}
             ></lightning-select>
           </div>
-          <div class="slds-col slds-size_1-of-5 slds-var-m-top_x-small">
+          <div class="slds-col slds-large-size_1-of-5 slds-var-m-top_x-small  slds-size_1-of-2">
             <div class="select-container">
               <lightning-select
+                value={selectSortingStrategy}
                 options={sortingStrategy}
                 onchange={handleSortingStrategy}
-                disabled={isNotFieldNameSelected}
+                disabled={isFieldNameNotSelected}
               ></lightning-select>
               <lightning-select
+                value={selectFilteringOperation}
                 options={filteringOperations}
                 onchange={handleFilteringOperation}
-                disabled={isFilteringFieldSelected}
+                disabled={isFilteringFieldNotSelected}
               ></lightning-select>
             </div>
           </div>
-          <div class="slds-col slds-size_1-of-5 slds-var-m-top_x-small">
+          <div class="slds-col slds-large-size_1-of-5 slds-var-m-top_x-small  slds-size_1-of-2">
             <div class="select-input-container">
-              <!-- <lightning-select
-            options={sortingStrategy}
-            onchange={handleSortingStrategy}
-          ></lightning-select> -->
               <lightning-select
+                value={selectNull}
                 options={nullOptions}
                 onchange={handleNull}
-                disabled={isNotFieldNameSelected}
+                disabled={isFieldNameNotSelected}
               ></lightning-select>
 
               <lightning-input
-                disabled={isFilteringFieldSelected}
+                value={selectFilterValue}
+                disabled={isFilteringFieldNotSelected}
                 onchange={handleFilterValueChange}
               ></lightning-input>
             </div>
           </div>
-          <div class="slds-col slds-size_1-of-5">
+          <div class="slds-col slds-large-size_1-of-5  slds-size_1-of-2">
             <lightning-input 
               type="number"
               label="Max Records:"
+              value={selectLimit}
+              onchange={handleLimitRecords}
+              disabled={isFilteringFieldNotSelected}
             ></lightning-input>
 
             <lightning-input 
               type="number"
               label="How many skip"
+              value={selectOffset}
+              onchange={handleOffsetRecords}
+              disabled={isFilteringFieldNotSelected}
             ></lightning-input>
           </div>
         </div>
@@ -82,8 +89,7 @@
     <div>
       <c-soql-input-runner
         value-text={soqlQuery}
-        is-not-field-name-selected={isNotFieldNameSelected}>
+        is-not-field-name-selected={isFieldNameNotSelected}>
       </c-soql-input-runner>
     </div>
-  <!-- </div> -->
 </template>
